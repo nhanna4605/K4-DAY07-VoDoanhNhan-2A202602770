@@ -1,0 +1,300 @@
+==============================================================================
+BENCHMARK TRUY XUAT -- corpus quy dinh thu vien VinUni
+Sinh vien : Vo Doanh Nhan (2A202602770) -- nhom 3c1lop3a
+Chien luoc: heading (HeadingChunker)
+Backend   : gemini-embedding-001
+==============================================================================
+
+Da nap 10 tai lieu -> 41 chunk
+Do dai chunk: min=20 / tb=300 / max=887
+
+------------------------------------------------------------------------------
+[Q1] How long is my loan period and how many items can I borrow?
+      dang: tra so lieu / can loc doi tuong  |  filter: {'audience': 'student'}
+  Top-3:
+     1. score=+0.7272  muon-tai-lieu-sinh-vien-dai-hoc#1 [audience=student]  ## Circulation privilege
+     2. score=+0.7214  muon-tai-lieu-hoc-vien-sau-dai-hoc#1 [audience=student]  ## Circulation privilege
+     3. score=+0.6965  muon-tai-lieu-hoc-vien-sau-dai-hoc#2 [audience=student]  ## Renewal conditions
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : Sinh vien dai hoc: 3 cuon, 2 tuan, gia han 1 lan. Hoc vien sau dai hoc: 5 cuon, 1 thang, gia han 1 lan. KHONG phai 6 thang -- do la han muc cua giang vien.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/borrowing-priviledge/ | audience: student ## Circulation privilege  | User group | Number of items | Loan period | Renewal | | --- | --- | --- | --- | | Undergraduate students | 3...
+
+  --- A/B: chay lai KHONG filter ---
+     1. score=+0.7272  muon-tai-lieu-sinh-vien-dai-hoc#1 [audience=student]  ## Circulation privilege
+     2. score=+0.7214  muon-tai-lieu-hoc-vien-sau-dai-hoc#1 [audience=student]  ## Circulation privilege
+     3. score=+0.7002  muon-tai-lieu-giang-vien#1 [audience=faculty]  ## Circulation privilege
+
+------------------------------------------------------------------------------
+[Q2] How much is the overdue fine per day for a normal book?
+      dang: tra so lieu  |  filter: None
+  Top-3:
+     1. score=+0.7964  phi-phat-qua-han#1 [audience=all]  ## Overdue fines
+     2. score=+0.7587  phi-phat-qua-han#2 [audience=all]  ## Borrowing is free
+     3. score=+0.7473  phi-phat-qua-han#0 [audience=all]  # Overdue fines and replacement fees
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : 20.000 VND / ngay qua han / tai lieu doi voi tai lieu thuong. Tai lieu course-specific va thiet bi la 20.000 VND / GIO.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/faq/ | audience: all ## Overdue fines  The library charges an overdue fine for late return of borrowed items, counted from the due date or the expiration of the recall to the actu...
+
+------------------------------------------------------------------------------
+[Q3] Can I renew a book that is already overdue?
+      dang: hoi dieu kien (co/khong)  |  filter: None
+  Top-3:
+     1. score=+0.7563  muon-tai-lieu-sinh-vien-dai-hoc#2 [audience=student]  ## Renewal conditions
+     2. score=+0.7257  muon-tai-lieu-hoc-vien-sau-dai-hoc#2 [audience=student]  ## Renewal conditions
+     3. score=+0.7099  phi-phat-qua-han#1 [audience=all]  ## Overdue fines
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : Khong. Tai lieu qua han khong duoc gia han. Gia han chi duoc phep khi chua co nguoi khac yeu cau, va thoi han gia han bang mot nua thoi han muon goc.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/borrowing-priviledge/ | audience: student ## Renewal conditions  The renewal period is half of the original loan period. Renewals of library materials are only allowed if there ha...
+
+------------------------------------------------------------------------------
+[Q4] How long can a group book a study room and how far in advance?
+      dang: hoi quy trinh + gioi han  |  filter: None
+  Top-3:
+     1. score=+0.7853  dat-phong-hoc-nhom#0 [audience=student]  # Study room booking
+     2. score=+0.7672  dat-phong-hoc-nhom#2 [audience=student]  ## Booking limits
+     3. score=+0.7170  dat-phong-hoc-nhom#1 [audience=student]  ## Who can book
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : Toi da 2 gio / luot, 2 luot / ngay, 4 luot / tuan tinh chung moi phong. Dat truoc toi da 1 tuan. Nhom phai co it nhat 2 nguoi. Khong den trong 10 phut dau thi mat luot.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/room-booking/ | audience: student # Study room booking  [2] nguon: https://library.vinuni.edu.vn/room-booking/ | audience: student ## Booking limits  The maximum period of a booki...
+
+------------------------------------------------------------------------------
+[Q5] Which library materials cannot be borrowed and must be read in the library?
+      dang: liet ke  |  filter: None
+  Top-3:
+     1. score=+0.7284  phan-loai-tai-lieu-duoc-muon#0 [audience=all]  # Circulation regulations for library materials
+     2. score=+0.7100  phan-loai-tai-lieu-duoc-muon#2 [audience=all]  ## Handling of materials
+     3. score=+0.6836  quy-dinh-chung-va-an-toan#0 [audience=all]  # General library regulations
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : Reference materials va print journals khong duoc muon (uncirculated), chi doc tai thu vien. Sach Course Reserve co muon duoc nhung chi 02 gio, 01 cuon/nguoi/luot.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/borrowing-priviledge/ | audience: all # Circulation regulations for library materials  | No. | Material type | Circulated? | Circulation location | Notes | | --- | --- | --- | ---...
+
+==============================================================================
+TONG DIEM CHAT LUONG TRUY XUAT: 10/10  (chien luoc: heading)
+==============================================================================
+
+
+==============================================================================
+BENCHMARK TRUY XUAT -- corpus quy dinh thu vien VinUni
+Sinh vien : Vo Doanh Nhan (2A202602770) -- nhom 3c1lop3a
+Chien luoc: recursive (RecursiveChunker)
+Backend   : gemini-embedding-001
+==============================================================================
+
+Da nap 10 tai lieu -> 20 chunk
+Do dai chunk: min=199 / tb=618 / max=877
+
+------------------------------------------------------------------------------
+[Q1] How long is my loan period and how many items can I borrow?
+      dang: tra so lieu / can loc doi tuong  |  filter: {'audience': 'student'}
+  Top-3:
+     1. score=+0.7053  muon-tai-lieu-sinh-vien-dai-hoc#0 [audience=student]  # Borrowing privilege - Undergraduate students
+     2. score=+0.7040  muon-tai-lieu-hoc-vien-sau-dai-hoc#0 [audience=student]  # Borrowing privilege - Graduate students
+     3. score=+0.6592  muon-tai-lieu-sinh-vien-dai-hoc#1 [audience=student]  All loans are subject to recall after one week's usage. If an it
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : Sinh vien dai hoc: 3 cuon, 2 tuan, gia han 1 lan. Hoc vien sau dai hoc: 5 cuon, 1 thang, gia han 1 lan. KHONG phai 6 thang -- do la han muc cua giang vien.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/borrowing-priviledge/ | audience: student # Borrowing privilege - Undergraduate students  ## Circulation privilege  | User group | Number of items | Loan period | Renewal | | --- ...
+
+  --- A/B: chay lai KHONG filter ---
+     1. score=+0.7053  muon-tai-lieu-sinh-vien-dai-hoc#0 [audience=student]  # Borrowing privilege - Undergraduate students
+     2. score=+0.7040  muon-tai-lieu-hoc-vien-sau-dai-hoc#0 [audience=student]  # Borrowing privilege - Graduate students
+     3. score=+0.6775  muon-tai-lieu-nhan-vien-va-giang-vien-lien-ket#0 [audience=staff]  # Circulation privileges - Affiliated faculty, full-time and ser
+
+------------------------------------------------------------------------------
+[Q2] How much is the overdue fine per day for a normal book?
+      dang: tra so lieu  |  filter: None
+  Top-3:
+     1. score=+0.7637  phi-phat-qua-han#0 [audience=all]  # Overdue fines and replacement fees
+     2. score=+0.7585  phi-phat-qua-han#1 [audience=all]  Patrons must pay **both** an overdue fine **and** an additional 
+     3. score=+0.6989  muon-tai-lieu-sinh-vien-dai-hoc#1 [audience=student]  All loans are subject to recall after one week's usage. If an it
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : 20.000 VND / ngay qua han / tai lieu doi voi tai lieu thuong. Tai lieu course-specific va thiet bi la 20.000 VND / GIO.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/faq/ | audience: all # Overdue fines and replacement fees  ## Overdue fines  The library charges an overdue fine for late return of borrowed items, counted from the due date or th...
+
+------------------------------------------------------------------------------
+[Q3] Can I renew a book that is already overdue?
+      dang: hoi dieu kien (co/khong)  |  filter: None
+  Top-3:
+     1. score=+0.6908  phi-phat-qua-han#0 [audience=all]  # Overdue fines and replacement fees
+     2. score=+0.6674  phi-phat-qua-han#1 [audience=all]  Patrons must pay **both** an overdue fine **and** an additional 
+     3. score=+0.6630  muon-tai-lieu-sinh-vien-dai-hoc#1 [audience=student]  All loans are subject to recall after one week's usage. If an it
+  => 1/2 diem  (gold o top-3 nhung ngu canh THIEU ['cannot be renewed', 'no request'])
+  Gold : Khong. Tai lieu qua han khong duoc gia han. Gia han chi duoc phep khi chua co nguoi khac yeu cau, va thoi han gia han bang mot nua thoi han muon goc.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/faq/ | audience: all # Overdue fines and replacement fees  ## Overdue fines  The library charges an overdue fine for late return of borrowed items, counted from the due date or th...
+
+------------------------------------------------------------------------------
+[Q4] How long can a group book a study room and how far in advance?
+      dang: hoi quy trinh + gioi han  |  filter: None
+  Top-3:
+     1. score=+0.7700  dat-phong-hoc-nhom#0 [audience=student]  # Study room booking
+     2. score=+0.6888  dat-phong-hoc-nhom#1 [audience=student]  The Library is not responsible for the security of personal item
+     3. score=+0.6161  muon-tai-lieu-hoc-vien-sau-dai-hoc#0 [audience=student]  # Borrowing privilege - Graduate students
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : Toi da 2 gio / luot, 2 luot / ngay, 4 luot / tuan tinh chung moi phong. Dat truoc toi da 1 tuan. Nhom phai co it nhat 2 nguoi. Khong den trong 10 phut dau thi mat luot.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/room-booking/ | audience: student # Study room booking  ## Who can book  The VinUniversity Library has **19 rooms** available to book online. Bookings are on a first-come-first-se...
+
+------------------------------------------------------------------------------
+[Q5] Which library materials cannot be borrowed and must be read in the library?
+      dang: liet ke  |  filter: None
+  Top-3:
+     1. score=+0.7110  phan-loai-tai-lieu-duoc-muon#0 [audience=all]  # Circulation regulations for library materials
+     2. score=+0.6899  phan-loai-tai-lieu-duoc-muon#1 [audience=all]  Requests will **not** be accepted if the item is in the Course R
+     3. score=+0.6865  muon-tai-lieu-giang-vien#1 [audience=faculty]  All loans are subject to recall after one week's usage. If an it
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : Reference materials va print journals khong duoc muon (uncirculated), chi doc tai thu vien. Sach Course Reserve co muon duoc nhung chi 02 gio, 01 cuon/nguoi/luot.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/borrowing-priviledge/ | audience: all # Circulation regulations for library materials  | No. | Material type | Circulated? | Circulation location | Notes | | --- | --- | --- | ---...
+
+==============================================================================
+TONG DIEM CHAT LUONG TRUY XUAT: 9/10  (chien luoc: recursive)
+==============================================================================
+
+
+==============================================================================
+BENCHMARK TRUY XUAT -- corpus quy dinh thu vien VinUni
+Sinh vien : Vo Doanh Nhan (2A202602770) -- nhom 3c1lop3a
+Chien luoc: fixed (FixedSizeChunker)
+Backend   : gemini-embedding-001
+==============================================================================
+
+Da nap 10 tai lieu -> 20 chunk
+Do dai chunk: min=158 / tb=694 / max=900
+
+------------------------------------------------------------------------------
+[Q1] How long is my loan period and how many items can I borrow?
+      dang: tra so lieu / can loc doi tuong  |  filter: {'audience': 'student'}
+  Top-3:
+     1. score=+0.7042  muon-tai-lieu-sinh-vien-dai-hoc#0 [audience=student]  # Borrowing privilege - Undergraduate students
+     2. score=+0.7040  muon-tai-lieu-hoc-vien-sau-dai-hoc#0 [audience=student]  # Borrowing privilege - Graduate students
+     3. score=+0.6729  muon-tai-lieu-sinh-vien-dai-hoc#1 [audience=student]  all
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : Sinh vien dai hoc: 3 cuon, 2 tuan, gia han 1 lan. Hoc vien sau dai hoc: 5 cuon, 1 thang, gia han 1 lan. KHONG phai 6 thang -- do la han muc cua giang vien.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/borrowing-priviledge/ | audience: student # Borrowing privilege - Undergraduate students  ## Circulation privilege  | User group | Number of items | Loan period | Renewal | | --- ...
+
+  --- A/B: chay lai KHONG filter ---
+     1. score=+0.7042  muon-tai-lieu-sinh-vien-dai-hoc#0 [audience=student]  # Borrowing privilege - Undergraduate students
+     2. score=+0.7040  muon-tai-lieu-hoc-vien-sau-dai-hoc#0 [audience=student]  # Borrowing privilege - Graduate students
+     3. score=+0.6825  muon-tai-lieu-giang-vien#0 [audience=faculty]  # Circulation privileges - Faculty (VinUni)
+
+------------------------------------------------------------------------------
+[Q2] How much is the overdue fine per day for a normal book?
+      dang: tra so lieu  |  filter: None
+  Top-3:
+     1. score=+0.7632  phi-phat-qua-han#0 [audience=all]  # Overdue fines and replacement fees
+     2. score=+0.7468  phi-phat-qua-han#1 [audience=all]  rons must pay **both** an overdue fine **and** an additional fee
+     3. score=+0.6989  muon-tai-lieu-sinh-vien-dai-hoc#1 [audience=student]  all
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : 20.000 VND / ngay qua han / tai lieu doi voi tai lieu thuong. Tai lieu course-specific va thiet bi la 20.000 VND / GIO.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/faq/ | audience: all # Overdue fines and replacement fees  ## Overdue fines  The library charges an overdue fine for late return of borrowed items, counted from the due date or th...
+
+------------------------------------------------------------------------------
+[Q3] Can I renew a book that is already overdue?
+      dang: hoi dieu kien (co/khong)  |  filter: None
+  Top-3:
+     1. score=+0.6973  phi-phat-qua-han#0 [audience=all]  # Overdue fines and replacement fees
+     2. score=+0.6561  phi-phat-qua-han#1 [audience=all]  rons must pay **both** an overdue fine **and** an additional fee
+     3. score=+0.6529  muon-tai-lieu-sinh-vien-dai-hoc#1 [audience=student]  all
+  => 1/2 diem  (gold o top-3 nhung ngu canh THIEU ['cannot be renewed', 'no request'])
+  Gold : Khong. Tai lieu qua han khong duoc gia han. Gia han chi duoc phep khi chua co nguoi khac yeu cau, va thoi han gia han bang mot nua thoi han muon goc.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/faq/ | audience: all # Overdue fines and replacement fees  ## Overdue fines  The library charges an overdue fine for late return of borrowed items, counted from the due date or th...
+
+------------------------------------------------------------------------------
+[Q4] How long can a group book a study room and how far in advance?
+      dang: hoi quy trinh + gioi han  |  filter: None
+  Top-3:
+     1. score=+0.7717  dat-phong-hoc-nhom#0 [audience=student]  # Study room booking
+     2. score=+0.6906  dat-phong-hoc-nhom#1 [audience=student]  ing or ask occupants to vacate
+     3. score=+0.6161  muon-tai-lieu-hoc-vien-sau-dai-hoc#0 [audience=student]  # Borrowing privilege - Graduate students
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : Toi da 2 gio / luot, 2 luot / ngay, 4 luot / tuan tinh chung moi phong. Dat truoc toi da 1 tuan. Nhom phai co it nhat 2 nguoi. Khong den trong 10 phut dau thi mat luot.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/room-booking/ | audience: student # Study room booking  ## Who can book  The VinUniversity Library has **19 rooms** available to book online. Bookings are on a first-come-first-se...
+
+------------------------------------------------------------------------------
+[Q5] Which library materials cannot be borrowed and must be read in the library?
+      dang: liet ke  |  filter: None
+  Top-3:
+     1. score=+0.7104  phan-loai-tai-lieu-duoc-muon#0 [audience=all]  # Circulation regulations for library materials
+     2. score=+0.6986  phan-loai-tai-lieu-duoc-muon#1 [audience=all]  the online catalog.
+     3. score=+0.6828  muon-tai-lieu-giang-vien#1 [audience=faculty]  l loans are subject to recall after one week's usage. If an item
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : Reference materials va print journals khong duoc muon (uncirculated), chi doc tai thu vien. Sach Course Reserve co muon duoc nhung chi 02 gio, 01 cuon/nguoi/luot.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/borrowing-priviledge/ | audience: all # Circulation regulations for library materials  | No. | Material type | Circulated? | Circulation location | Notes | | --- | --- | --- | ---...
+
+==============================================================================
+TONG DIEM CHAT LUONG TRUY XUAT: 9/10  (chien luoc: fixed)
+==============================================================================
+
+
+==============================================================================
+BENCHMARK TRUY XUAT -- corpus quy dinh thu vien VinUni
+Sinh vien : Vo Doanh Nhan (2A202602770) -- nhom 3c1lop3a
+Chien luoc: sentence (SentenceChunker)
+Backend   : gemini-embedding-001
+==============================================================================
+
+Da nap 10 tai lieu -> 23 chunk
+Do dai chunk: min=85 / tb=536 / max=1063
+
+------------------------------------------------------------------------------
+[Q1] How long is my loan period and how many items can I borrow?
+      dang: tra so lieu / can loc doi tuong  |  filter: {'audience': 'student'}
+  Top-3:
+     1. score=+0.7120  muon-tai-lieu-hoc-vien-sau-dai-hoc#0 [audience=student]  # Borrowing privilege - Graduate students
+     2. score=+0.7109  muon-tai-lieu-sinh-vien-dai-hoc#0 [audience=student]  # Borrowing privilege - Undergraduate students
+     3. score=+0.6682  muon-tai-lieu-hoc-vien-sau-dai-hoc#1 [audience=student]  ## Recall
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : Sinh vien dai hoc: 3 cuon, 2 tuan, gia han 1 lan. Hoc vien sau dai hoc: 5 cuon, 1 thang, gia han 1 lan. KHONG phai 6 thang -- do la han muc cua giang vien.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/borrowing-priviledge/ | audience: student # Borrowing privilege - Graduate students  ## Circulation privilege  | User group | Number of items | Loan period | Renewal | | --- | ---...
+
+  --- A/B: chay lai KHONG filter ---
+     1. score=+0.7120  muon-tai-lieu-hoc-vien-sau-dai-hoc#0 [audience=student]  # Borrowing privilege - Graduate students
+     2. score=+0.7109  muon-tai-lieu-sinh-vien-dai-hoc#0 [audience=student]  # Borrowing privilege - Undergraduate students
+     3. score=+0.6862  muon-tai-lieu-giang-vien#0 [audience=faculty]  # Circulation privileges - Faculty (VinUni)
+
+------------------------------------------------------------------------------
+[Q2] How much is the overdue fine per day for a normal book?
+      dang: tra so lieu  |  filter: None
+  Top-3:
+     1. score=+0.7642  phi-phat-qua-han#0 [audience=all]  # Overdue fines and replacement fees
+     2. score=+0.7271  phi-phat-qua-han#1 [audience=all]  ## Borrowing is free
+     3. score=+0.7126  muon-tai-lieu-sinh-vien-dai-hoc#1 [audience=student]  Patrons MUST return or renew all borrowed materials before their
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : 20.000 VND / ngay qua han / tai lieu doi voi tai lieu thuong. Tai lieu course-specific va thiet bi la 20.000 VND / GIO.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/faq/ | audience: all # Overdue fines and replacement fees  ## Overdue fines  The library charges an overdue fine for late return of borrowed items, counted from the due date or th...
+
+------------------------------------------------------------------------------
+[Q3] Can I renew a book that is already overdue?
+      dang: hoi dieu kien (co/khong)  |  filter: None
+  Top-3:
+     1. score=+0.7287  muon-tai-lieu-sinh-vien-dai-hoc#1 [audience=student]  Patrons MUST return or renew all borrowed materials before their
+     2. score=+0.6940  phi-phat-qua-han#0 [audience=all]  # Overdue fines and replacement fees
+     3. score=+0.6585  muon-tai-lieu-sinh-vien-dai-hoc#2 [audience=student]  ## Other conditions
+  => 1/2 diem  (gold o top-1 nhung ngu canh THIEU ['cannot be renewed', 'no request'])
+  Gold : Khong. Tai lieu qua han khong duoc gia han. Gia han chi duoc phep khi chua co nguoi khac yeu cau, va thoi han gia han bang mot nua thoi han muon goc.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/borrowing-priviledge/ | audience: student Patrons MUST return or renew all borrowed materials before their overdue time. Overdue items cannot be renewed. ## Recall  All loans are ...
+
+------------------------------------------------------------------------------
+[Q4] How long can a group book a study room and how far in advance?
+      dang: hoi quy trinh + gioi han  |  filter: None
+  Top-3:
+     1. score=+0.7811  dat-phong-hoc-nhom#0 [audience=student]  # Study room booking
+     2. score=+0.6876  dat-phong-hoc-nhom#1 [audience=student]  ## Cancellation and no-show
+     3. score=+0.6793  dat-phong-hoc-nhom#2 [audience=student]  ## Rooms
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : Toi da 2 gio / luot, 2 luot / ngay, 4 luot / tuan tinh chung moi phong. Dat truoc toi da 1 tuan. Nhom phai co it nhat 2 nguoi. Khong den trong 10 phut dau thi mat luot.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/room-booking/ | audience: student # Study room booking  ## Who can book  The VinUniversity Library has **19 rooms** available to book online. Bookings are on a first-come-first-se...
+
+------------------------------------------------------------------------------
+[Q5] Which library materials cannot be borrowed and must be read in the library?
+      dang: liet ke  |  filter: None
+  Top-3:
+     1. score=+0.7158  phan-loai-tai-lieu-duoc-muon#0 [audience=all]  # Circulation regulations for library materials
+     2. score=+0.7013  phan-loai-tai-lieu-duoc-muon#1 [audience=all]  If not picked up, the request
+     3. score=+0.6776  muon-tai-lieu-sinh-vien-dai-hoc#1 [audience=student]  Patrons MUST return or renew all borrowed materials before their
+  => 2/2 diem  (gold o top-1 va ngu canh chua dap an)
+  Gold : Reference materials va print journals khong duoc muon (uncirculated), chi doc tai thu vien. Sach Course Reserve co muon duoc nhung chi 02 gio, 01 cuon/nguoi/luot.
+  Agent: [1] nguon: https://library.vinuni.edu.vn/borrowing-priviledge/ | audience: all # Circulation regulations for library materials  | No. | Material type | Circulated? | Circulation location | Notes | | --- | --- | --- | ---...
+
+==============================================================================
+TONG DIEM CHAT LUONG TRUY XUAT: 9/10  (chien luoc: sentence)
+==============================================================================
+
+

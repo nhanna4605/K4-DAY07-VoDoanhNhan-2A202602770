@@ -108,8 +108,24 @@ def robots_allowed(url: str, user_agent: str) -> bool:
     robots_url = f"{parsed.scheme}://{parsed.netloc}/robots.txt"
     parser = RobotFileParser(robots_url)
     try:
-        parser.read()
-    except (HTTPError, URLError, OSError) as error:
+        # RobotFileParser.read() tai robots.txt bang User-Agent mac dinh cua
+        # Python chu KHONG dung UA ma script nay khai bao. Host nao chan agent
+        # la se tra 403; read() nuot loi do va dat disallow_all = True, khien
+        # MOI url bi coi la bi cam du robots.txt thuc te cho phep.
+        # Tai robots.txt bang dung UA da khai bao de script tu danh nhat quan.
+        request = Request(robots_url, headers={"User-Agent": user_agent})
+        with urlopen(request, timeout=30) as response:
+            charset = response.headers.get_content_charset() or "utf-8"
+            parser.parse(response.read().decode(charset, "replace").splitlines())
+    except HTTPError as error:
+        if error.code == 404:
+            # Khong co robots.txt -> theo quy uoc la duoc phep.
+            parser.parse([])
+        else:
+            # 401/403 hoac loi server: giu nguyen huong xu ly than trong.
+            print(f"Skipping {url}: {robots_url} returned HTTP {error.code}", file=sys.stderr)
+            return False
+    except (URLError, OSError) as error:
         print(f"Skipping {url}: cannot verify {robots_url} ({error})", file=sys.stderr)
         return False
     if not parser.can_fetch(user_agent, url):
