@@ -1,14 +1,14 @@
 ---
-doc_id: "doi-tuong-khong-duoc-muon"
-title: "Doi tuong khong duoc muon tai lieu"
-source_url: "https://policy.vinuni.edu.vn/all-policies/library-policies-for-users/"
-retrieved_at: "2026-09-19"
+doc_id: doi-tuong-khong-duoc-muon
+title: Doi tuong khong duoc muon tai lieu
+source_url: https://policy.vinuni.edu.vn/all-policies/library-policies-for-users/
+retrieved_at: 2026-09-19
 document_version: "POL-LLR-001-V4.0"
-audience: "all"
-user_group: "visitor-guest-alumni"
-department: "library"
-category: "borrowing"
-language: "en"
+audience: all
+user_group: visitor-guest-alumni
+department: library
+category: borrowing
+language: en
 ---
 
 # Circulation privileges - Visiting students, guests, interns and alumni

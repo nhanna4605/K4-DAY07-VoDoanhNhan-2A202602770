@@ -1,14 +1,14 @@
 ---
-doc_id: "gio-mo-cua-va-quyen-ra-vao"
-title: "Gio mo cua va quyen ra vao thu vien"
-source_url: "https://library.vinuni.edu.vn/about-us/hours-and-access/"
-retrieved_at: "2026-09-19"
+doc_id: gio-mo-cua-va-quyen-ra-vao
+title: Gio mo cua va quyen ra vao thu vien
+source_url: https://library.vinuni.edu.vn/about-us/hours-and-access/
+retrieved_at: 2026-09-19
 document_version: "not-stated"
-audience: "all"
-user_group: "all-members"
-department: "library"
-category: "access"
-language: "en"
+audience: all
+user_group: all-members
+department: library
+category: access
+language: en
 ---
 
 # Library hours and access

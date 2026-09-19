@@ -1,14 +1,14 @@
 ---
-doc_id: "phan-loai-tai-lieu-duoc-muon"
-title: "Phan loai tai lieu duoc muon va khong duoc muon"
-source_url: "https://library.vinuni.edu.vn/borrowing-priviledge/"
-retrieved_at: "2026-09-19"
+doc_id: phan-loai-tai-lieu-duoc-muon
+title: Phan loai tai lieu duoc muon va khong duoc muon
+source_url: https://library.vinuni.edu.vn/borrowing-priviledge/
+retrieved_at: 2026-09-19
 document_version: "not-stated"
-audience: "all"
-user_group: "all-members"
-department: "library"
-category: "borrowing"
-language: "en"
+audience: all
+user_group: all-members
+department: library
+category: borrowing
+language: en
 ---
 
 # Circulation regulations for library materials

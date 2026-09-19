@@ -1,14 +1,14 @@
 ---
-doc_id: "muon-tai-lieu-nhan-vien-va-giang-vien-lien-ket"
-title: "Han muc muon tai lieu - Nhan vien va giang vien lien ket"
-source_url: "https://policy.vinuni.edu.vn/all-policies/library-policies-for-users/"
-retrieved_at: "2026-09-19"
+doc_id: muon-tai-lieu-nhan-vien-va-giang-vien-lien-ket
+title: Han muc muon tai lieu - Nhan vien va giang vien lien ket
+source_url: https://policy.vinuni.edu.vn/all-policies/library-policies-for-users/
+retrieved_at: 2026-09-19
 document_version: "POL-LLR-001-V4.0"
-audience: "staff"
-user_group: "staff-affiliated-faculty"
-department: "library"
-category: "borrowing"
-language: "en"
+audience: staff
+user_group: staff-affiliated-faculty
+department: library
+category: borrowing
+language: en
 ---
 
 # Circulation privileges - Affiliated faculty, full-time and service contract staff

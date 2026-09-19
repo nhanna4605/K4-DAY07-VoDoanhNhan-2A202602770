@@ -81,7 +81,33 @@ def slugify(value: str) -> str:
     return value.strip("-") or "document"
 
 
+# Gia tri can boc nhay: rong, co ": " hoac " #", co khoang trang dau/cuoi,
+# co nhay/backslash, bat dau bang ky tu chi thi cua YAML, hoac trong giong so
+# / ngay thang (vi du "2026.1", "2026-09-01") -- neu de tran thi YAML doc thanh
+# float hoac date thay vi chuoi.
+_YAML_INDICATORS = "-?:,[]{}&*!|>'\"%@`"
+_LOOKS_NUMERIC = re.compile(r"^\d[\d.\-/:]*$")
+
+
 def yaml_value(value: str) -> str:
+    """Tra ve scalar YAML, chi boc nhay khi that su can.
+
+    Boc nhay vo dieu kien lam hong script kiem tra CHECKPOINT 2 cua lab: regex
+    ^(\\w+):\\s*(.+)$ bat ca dau nhay vao gia tri, nen fm['doc_id'] thanh
+    '"ten-file"' va khong bao gio bang p.stem -> moi file bi bao THIEU METADATA.
+    """
+    needs_quote = (
+        not value
+        or value != value.strip()
+        or ": " in value
+        or " #" in value
+        or '"' in value
+        or "\\" in value
+        or value[0] in _YAML_INDICATORS
+        or bool(_LOOKS_NUMERIC.match(value))
+    )
+    if not needs_quote:
+        return value
     return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 

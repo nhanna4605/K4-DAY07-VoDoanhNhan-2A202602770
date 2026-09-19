@@ -1,14 +1,14 @@
 ---
-doc_id: "dat-phong-hoc-nhom"
-title: "Quy dinh dat phong hoc nhom trong thu vien"
-source_url: "https://library.vinuni.edu.vn/room-booking/"
-retrieved_at: "2026-09-19"
+doc_id: dat-phong-hoc-nhom
+title: Quy dinh dat phong hoc nhom trong thu vien
+source_url: https://library.vinuni.edu.vn/room-booking/
+retrieved_at: 2026-09-19
 document_version: "not-stated"
-audience: "student"
-user_group: "all-members"
-department: "library"
-category: "facilities"
-language: "en"
+audience: student
+user_group: all-members
+department: library
+category: facilities
+language: en
 ---
 
 # Study room booking

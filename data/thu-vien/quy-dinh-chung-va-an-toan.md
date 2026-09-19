@@ -1,14 +1,14 @@
 ---
-doc_id: "quy-dinh-chung-va-an-toan"
-title: "Quy dinh chung, ra vao va an toan trong thu vien"
-source_url: "https://policy.vinuni.edu.vn/all-policies/library-policies-for-users/"
-retrieved_at: "2026-09-19"
+doc_id: quy-dinh-chung-va-an-toan
+title: Quy dinh chung, ra vao va an toan trong thu vien
+source_url: https://policy.vinuni.edu.vn/all-policies/library-policies-for-users/
+retrieved_at: 2026-09-19
 document_version: "POL-LLR-001-V4.0"
-audience: "all"
-user_group: "all-members"
-department: "library"
-category: "policy"
-language: "en"
+audience: all
+user_group: all-members
+department: library
+category: policy
+language: en
 ---
 
 # General library regulations

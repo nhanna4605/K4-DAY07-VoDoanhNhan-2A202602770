@@ -1,14 +1,14 @@
 ---
-doc_id: "phi-phat-qua-han"
-title: "Phi phat qua han va den bu tai lieu"
-source_url: "https://library.vinuni.edu.vn/faq/"
-retrieved_at: "2026-09-19"
+doc_id: phi-phat-qua-han
+title: Phi phat qua han va den bu tai lieu
+source_url: https://library.vinuni.edu.vn/faq/
+retrieved_at: 2026-09-19
 document_version: "not-stated"
-audience: "all"
-user_group: "all-members"
-department: "library"
-category: "fines"
-language: "en"
+audience: all
+user_group: all-members
+department: library
+category: fines
+language: en
 ---
 
 # Overdue fines and replacement fees

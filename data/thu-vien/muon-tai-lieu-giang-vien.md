@@ -1,14 +1,14 @@
 ---
-doc_id: "muon-tai-lieu-giang-vien"
-title: "Han muc muon tai lieu - Giang vien VinUni"
-source_url: "https://policy.vinuni.edu.vn/all-policies/library-policies-for-users/"
-retrieved_at: "2026-09-19"
+doc_id: muon-tai-lieu-giang-vien
+title: Han muc muon tai lieu - Giang vien VinUni
+source_url: https://policy.vinuni.edu.vn/all-policies/library-policies-for-users/
+retrieved_at: 2026-09-19
 document_version: "POL-LLR-001-V4.0"
-audience: "faculty"
-user_group: "faculty"
-department: "library"
-category: "borrowing"
-language: "en"
+audience: faculty
+user_group: faculty
+department: library
+category: borrowing
+language: en
 ---
 
 # Circulation privileges - Faculty (VinUni)

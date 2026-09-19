@@ -1,14 +1,14 @@
 ---
-doc_id: "muon-tai-lieu-hoc-vien-sau-dai-hoc"
-title: "Han muc muon tai lieu - Hoc vien sau dai hoc"
-source_url: "https://library.vinuni.edu.vn/borrowing-priviledge/"
-retrieved_at: "2026-09-19"
+doc_id: muon-tai-lieu-hoc-vien-sau-dai-hoc
+title: Han muc muon tai lieu - Hoc vien sau dai hoc
+source_url: https://library.vinuni.edu.vn/borrowing-priviledge/
+retrieved_at: 2026-09-19
 document_version: "not-stated"
-audience: "student"
-user_group: "graduate"
-department: "library"
-category: "borrowing"
-language: "en"
+audience: student
+user_group: graduate
+department: library
+category: borrowing
+language: en
 ---
 
 # Borrowing privilege - Graduate students
