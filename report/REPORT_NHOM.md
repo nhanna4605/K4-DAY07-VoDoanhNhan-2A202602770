@@ -144,8 +144,26 @@ class HeadingChunker:
 **Thành viên 3 — Nguyễn Thanh Dương (2A202602961)**
 - **Loại chiến lược:** `FixedSizeChunker(chunk_size=900, overlap=150)` — đường cơ sở có chồng lấn
 - **Kết quả:** 10 tài liệu → **20 chunk**, min=158 / tb=694 / max=900 · **9/10 điểm**
-- **Mô tả & lý do chọn:** Cắt cứng theo số ký tự với `overlap=150` làm đường cơ sở để nhóm đo xem hai chiến lược "thông minh" hơn thắng được bao nhiêu. Overlap được đặt ở mức ~17% `chunk_size` với mục đích nhân bản vùng giáp ranh, cho mỗi thông tin hơn một cơ hội lọt top-k khi nó nằm vắt ngang ranh giới cắt. Kết quả đo cho thấy chiến lược này sinh chunk dài nhất nhóm (tb 694, max chạm trần 900) và là chiến lược duy nhất có chunk chạm đúng giới hạn — dấu hiệu của việc cắt máy móc không theo ngữ nghĩa.
+- **Mô tả & lý do chọn:** Cắt cứng theo số ký tự với `overlap=150` làm đường cơ sở để nhóm đo xem hai chiến lược "thông minh" hơn thắng được bao nhiêu. Overlap đặt ở mức ~17% `chunk_size` nhằm nhân bản vùng giáp ranh, cho mỗi thông tin hơn một cơ hội lọt top-k khi nó nằm vắt ngang ranh giới cắt. Số đo cho thấy chiến lược này sinh chunk dài nhất nhóm (tb 694) và là chiến lược duy nhất có chunk **chạm đúng trần 900** — dấu hiệu của việc cắt máy móc không theo ngữ nghĩa.
+- **Kết luận của Dương sau khi chạy:** *(trích `REPORT_CANHAN.md` mục 5 của Dương)* — "Failure case duy nhất còn lại (Q3) là vấn đề **chunking**: chunk 900 ký tự quá lớn, nhồi nhiều chủ đề, khiến chunk 'phí phạt' (liên quan overdue) vượt chunk 'điều kiện gia hạn' về score. Giải pháp: dùng chunk nhỏ hơn hoặc `HeadingChunker` để tách riêng section 'Renewal conditions'."
 - **Code snippet (nếu custom):** không — dùng `FixedSizeChunker` có sẵn trong `src/chunking.py`
+
+> **Đáng chú ý:** Dương tự đi đến kết luận nên dùng `HeadingChunker` **từ phía đường cơ sở đi lên**, độc lập với việc Nhân chọn chiến lược đó **từ đầu** dựa trên cấu trúc văn bản. Hai hướng suy luận ngược nhau gặp nhau ở cùng một kết luận — đó là bằng chứng mạnh hơn nhiều so với việc chỉ một người khẳng định chiến lược của mình tốt.
+
+### Đo riêng tác động của embedding backend (Dương)
+
+Ngoài việc đổi chunker, Dương chạy thêm **cùng chiến lược `fixed` trên hai backend khác nhau** — đây là biến số mà ba chiến lược ở trên đều giữ cố định, nên nó tách được ảnh hưởng của embedding ra khỏi ảnh hưởng của chunking:
+
+| Backend | Điểm | Q1 | Q2 | Q3 | Q4 | Q5 |
+| --- | --- | --- | --- | --- | --- | --- |
+| `MockEmbedder` (MD5 hash, 64 chiều) | **2/10** | 0 | 2 | 0 | 0 | 0 |
+| `gemini-embedding-001` (3072 chiều) | **9/10** | 2 | 2 | 1 | 2 | 2 |
+
+*(Nhóm đã chạy lại độc lập để xác nhận con số 2/10.)*
+
+Với mock, Q5 trả về top-1 là `nhan-vien-va-giang-vien-lien-ket#0` (score +0.2404) cho câu hỏi về **tài liệu nào không được mượn** — hoàn toàn không liên quan, và tài liệu gold thậm chí không lọt top-3. Toàn bộ score nằm trong dải 0.20–0.24, tức **nhiễu quanh 0** đúng như kỳ vọng thống kê với vector ngẫu nhiên.
+
+**Ý nghĩa cho việc so sánh chiến lược:** chênh lệch giữa ba chiến lược chunking là **1 điểm**, còn chênh lệch giữa mock và embedding thật là **7 điểm**. Nói cách khác, chọn đúng backend quan trọng gấp bảy lần chọn đúng chunker. Nếu nhóm chạy benchmark bằng mock thì mọi kết luận về chunking ở mục này đều vô nghĩa — ba chiến lược sẽ chỉ đang so xem cái nào may mắn hơn.
 
 ### So Sánh Giữa Các Thành Viên
 
@@ -162,6 +180,16 @@ Cả ba chạy cùng corpus (10 tài liệu), cùng 5 query, cùng backend `gemi
 | Nhân | Mỗi chunk = một điều khoản trọn vẹn. Thắng Q3 vì giữ nguyên mục `## Renewal conditions` chứa cả hai vế của quy tắc gia hạn | Sinh gấp đôi số chunk (41 vs 20) → gấp đôi chi phí embedding. Phụ thuộc văn bản có heading; corpus không cấu trúc sẽ rơi về recursive và mất hết lợi thế |
 | Trí | Chunk dài, ngữ cảnh dày, không có chunk vụn (min=199 — cao nhất nhóm, chứng tỏ bước gom mảnh nhỏ hoạt động đúng) | Gộp nhiều mục vào một chunk → Q3 để tài liệu tiền phạt chiếm cả top-1 lẫn top-2 |
 | Dương | Overlap 150 giữ được thông tin vắt ngang ranh giới; đơn giản nhất, không phụ thuộc cấu trúc văn bản | Chunk dài nhất (tb 694) và **chạm trần 900** — cắt máy móc giữa bảng Markdown, chunk mất tính đọc được. Q3 hỏng giống Trí |
+
+**Trạng thái phần cá nhân của ba thành viên** (mỗi người nộp `REPORT_CANHAN.md` riêng, ghi ở đây để nhóm nắm tiến độ chung):
+
+| Thành viên | `pytest tests/ -v` | Python | Điểm tự đánh giá cá nhân |
+|---|---|---|---|
+| Võ Doanh Nhân | 42/42 | 3.12.10 | 60/60 |
+| Ngô Minh Trí | 42/42 | — | *(chưa điền bảng tự đánh giá)* |
+| Nguyễn Thanh Dương | 42/42 | 3.10.8 | 57/60 |
+
+Cả ba đều đạt 42/42 trên ba máy và ba phiên bản Python khác nhau, nên bộ test không phụ thuộc môi trường.
 
 **Một quan sát bất ngờ về mặt kỹ thuật:** ba thành viên viết `src/` **hoàn toàn độc lập** (Trí còn giữ cả nhánh ChromaDB mà Nhân đã bỏ, và prompt agent của ba người khác hẳn nhau), nhưng khi chạy cùng một chiến lược thì **điểm cosine trùng nhau đến 4 chữ số thập phân** — ví dụ Q1 top-1 của Dương và bản `fixed` đối chứng của Nhân đều là `+0.7042`; Q3 top-1 của Trí và bản `recursive` đối chứng đều là `+0.6908`. Điều đó xác nhận rằng đặc tả trong docstring của lab đủ chặt để các cài đặt độc lập hội tụ về cùng hành vi, và khác biệt điểm số giữa ba người **hoàn toàn đến từ lựa chọn chiến lược**, không phải từ lỗi cài đặt.
 
@@ -240,9 +268,10 @@ Cả ba chạy cùng corpus (10 tài liệu), cùng 5 query, cùng backend `gemi
 
 **Những phân tích (insights) hay nhất nhóm sẽ trình bày:**
 
-1. **Hai cách chấm cho kết quả khác nhau, và cách dễ hơn thì sai.** Nếu chỉ kiểm `doc_id` gold có trong top-3, cả ba thành viên đều 10/10 và buổi lab không học được gì. Kiểm thêm chuỗi đặc trưng trong ngữ cảnh mới lộ ra Q3 phân loại được chiến lược. Chênh lệch giữa hai cách chấm là phát hiện đáng giá nhất của nhóm.
-2. **Metadata filter cứu đúng một câu, nhưng là câu mà sai thì hậu quả lớn nhất.** Hai chunk cách nhau 0.0037 điểm cosine mà một cái đúng một cái sai hoàn toàn với người hỏi — similarity không thể tự giải quyết, phải có chiều dữ liệu khác. Và cả ba chiến lược đều dính lỗi này khi bỏ filter.
-3. **Ba cài đặt độc lập hội tụ về cùng số liệu.** Ba người viết `src/` khác nhau (khác cả prompt agent lẫn việc giữ hay bỏ nhánh ChromaDB) nhưng cùng chiến lược thì score trùng đến 4 chữ số. Nhờ vậy nhóm chắc chắn khác biệt điểm là do **chiến lược**, không phải do bug.
+1. **Chọn backend quan trọng gấp 7 lần chọn chunker.** Ba chiến lược chunking chênh nhau 1 điểm (10 / 9 / 9). Nhưng cùng một chiến lược `fixed` chạy trên mock so với Gemini chênh **7 điểm** (2/10 → 9/10). Nhóm suýt phân tích nhầm: nếu chạy benchmark bằng mock thì mọi kết luận về chunking đều là so xem chiến lược nào may mắn hơn.
+2. **Hai cách chấm cho kết quả khác nhau, và cách dễ hơn thì sai.** Nếu chỉ kiểm `doc_id` gold có trong top-3, cả ba thành viên đều 10/10 và buổi lab không học được gì. Kiểm thêm chuỗi đặc trưng trong ngữ cảnh mới lộ ra Q3 phân loại được chiến lược. Sai lầm này **thật sự đã xảy ra trong nhóm**: một thành viên khi đọc lại output đã ghi rằng chunk gold ở top-3 "chứa `Overdue items cannot be renewed`", trong khi kiểm lại nội dung chunk thì câu đó nằm ở chunk khác — chunk lọt top-3 chỉ nói về *recall*. Chính `must_contain` bắt được chỗ mà mắt người đọc lướt qua.
+3. **Metadata filter cứu đúng một câu, nhưng là câu mà sai thì hậu quả lớn nhất.** Hai chunk cách nhau 0.0037 điểm cosine mà một cái đúng một cái sai hoàn toàn với người hỏi — similarity không thể tự giải quyết, phải có chiều dữ liệu khác. Và cả ba chiến lược đều dính lỗi này khi bỏ filter.
+4. **Ba cài đặt độc lập hội tụ về cùng số liệu.** Ba người viết `src/` khác nhau (khác cả prompt agent lẫn việc giữ hay bỏ nhánh ChromaDB) nhưng cùng chiến lược thì score trùng đến 4 chữ số. Nhờ vậy nhóm chắc chắn khác biệt điểm là do **chiến lược**, không phải do bug.
 
 **Phân tích lỗi (Failure Analysis)**
 
@@ -269,7 +298,9 @@ Cả ba chạy cùng corpus (10 tài liệu), cùng 5 query, cùng backend `gemi
 >
 > **Hai:** họp chốt corpus và bộ query **trước** khi ai bắt đầu code. Lần này nhóm không họp kịp nên một người dựng sẵn corpus + benchmark rồi chia lại; cách đó vẫn ra số liệu thật nhưng mất đi góc nhìn "mỗi người tự đọc dữ liệu thì sẽ chọn tham số khác nhau" — hiện cả ba đều dùng `chunk_size=900` vì đó là giá trị người đầu tiên đặt.
 >
-> **Ba:** bổ sung tài liệu tiếng Việt. Corpus hiện tại toàn tiếng Anh vì nguồn VinUni công khai là tiếng Anh, trong khi câu hỏi thật của sinh viên sẽ đặt bằng tiếng Việt. Nhóm chưa kiểm được chất lượng truy xuất **xuyên ngôn ngữ**, dù `gemini-embedding-001` là mô hình đa ngữ và về lý thuyết làm được.
+> **Ba:** bổ sung tài liệu tiếng Việt và **đo hẳn khả năng xuyên ngôn ngữ**. Corpus hiện tại toàn tiếng Anh vì nguồn VinUni công khai là tiếng Anh, trong khi câu hỏi thật của sinh viên sẽ đặt bằng tiếng Việt. Dương đã chạm vào vấn đề này ở phần dự đoán similarity — cặp *"Phi phat qua han 20.000 VND/ngay"* ↔ *"Late return fee is 20,000 VND per day"* là cặp Việt–Anh cùng nghĩa — nhưng mới đo trên mock nên chỉ chứng minh được mock không hiểu gì, chưa chứng minh được Gemini hiểu. Lần sau nhóm sẽ đặt cả 5 benchmark query bằng tiếng Việt trên corpus tiếng Anh, vì đó mới là tình huống sử dụng thật.
+>
+> **Bốn:** thống nhất định dạng file kết quả từ đầu. Một thành viên xuất `ket_qua_benchmark.txt` bằng PowerShell nên file ra **UTF-16**, mở bằng editor thường thấy chữ cách quãng từng ký tự. Quy ước chung nên là đặt `PYTHONIOENCODING=utf-8` trước khi redirect.
 
 ---
 
