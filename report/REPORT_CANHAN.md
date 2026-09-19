@@ -288,8 +288,19 @@ Câu Q1 cố tình **không nêu người hỏi là ai** ("**my** loan period"),
 
 Không lọc, slot thứ 3 bị **tài liệu giảng viên** chiếm — nó ghi *"5 items, 6 months"*. Một sinh viên đọc câu trả lời có ngữ cảnh đó hoàn toàn có thể kết luận mình được mượn 6 tháng, **sai gấp 12 lần** so với 2 tuần thực tế. Chênh lệch score giữa chunk faculty (+0.7002) và chunk graduate (+0.6965) chỉ là **0.0037** — quá nhỏ để embedding tự phân biệt được. Đây chính là chỗ metadata làm được việc mà similarity không làm được: **phân biệt đúng/sai theo đối tượng, không phải theo chủ đề.**
 
-**Điều hay nhất tôi học được từ thành viên khác / nhóm khác (qua demo):**
-> *(Điền sau buổi demo)*
+**Điều hay nhất tôi học được từ thành viên khác / nhóm khác:**
+
+> *(Nhóm không kịp thuyết trình, nên phần này tôi viết theo những gì học được khi đối chiếu kết quả với hai thành viên trong nhóm.)*
+>
+> **Từ Dương — thứ tôi đã bỏ sót hoàn toàn.** Tôi chỉ giữ backend cố định ở `gemini-embedding-001` rồi đổi chunker để so sánh. Dương làm ngược lại: giữ nguyên chiến lược `fixed` và đổi backend, ra **2/10 với mock so với 9/10 với Gemini**. Tôi chạy lại để kiểm và đúng 2/10 thật — với mock, câu hỏi "tài liệu nào không được mượn" trả về top-1 là tài liệu *hạn mức nhân viên* (+0.2404), tài liệu gold không lọt nổi top-3.
+>
+> Con số đó làm tôi phải đọc lại kết luận của chính mình. Ba chiến lược chunking của nhóm chênh nhau **1 điểm**, còn mock với embedding thật chênh **7 điểm**. Tức là biến số tôi đã "khoá lại và quên đi" hoá ra quan trọng gấp bảy lần biến số tôi bỏ cả buổi để tinh chỉnh. Bài học là khi so sánh, phải hỏi **biến nào tôi đang giữ cố định và nó có thật sự vô hại không**, chứ không chỉ chăm chăm vào biến mình đang đổi.
+>
+> **Từ Trí — một câu chỉnh lại cách tôi đọc điểm tổng:** *"cần so sánh chiến lược theo từng loại câu hỏi, không chỉ theo điểm tổng."* Tôi thắng 10/10 so với 9/10 và suýt kết luận HeadingChunker "tốt hơn". Nhìn theo từng câu thì đúng hơn nhiều: cả ba chiến lược hoà nhau ở Q1, Q2, Q4, Q5, toàn bộ khác biệt nằm ở **đúng một câu Q3**. Nếu bộ benchmark không tình cờ có Q3, ba chiến lược sẽ ra điểm y hệt và nhóm sẽ kết luận nhầm rằng chọn chunker thế nào cũng như nhau.
+>
+> **Từ việc đối chiếu số liệu ba người — điều bất ngờ nhất.** Ba chúng tôi viết `src/` hoàn toàn độc lập, trên ba máy và ba phiên bản Python khác nhau (3.12.10 / 3.10.8 / …), prompt agent khác hẳn nhau, Trí còn giữ nguyên nhánh ChromaDB mà tôi đã bỏ. Vậy mà khi chạy cùng một chiến lược, điểm cosine **trùng nhau đến 4 chữ số thập phân** — Q3 top-1 của Trí và bản `recursive` đối chứng của tôi đều là `+0.6908`. Điều này cho tôi thấy giá trị của việc đặc tả chặt: docstring của lab đủ rõ để ba cài đặt độc lập hội tụ về cùng hành vi, nhờ vậy nhóm chắc chắn được rằng chênh lệch điểm đến từ **lựa chọn chiến lược** chứ không phải từ bug của ai đó.
+>
+> **Một bài học nhỏ nhưng tốn thời gian thật:** báo cáo của Dương ghi chunk lọt top-3 ở Q3 "chứa `Overdue items cannot be renewed`". Tôi kiểm lại nội dung chunk thì câu đó nằm ở chunk `#0`, còn chunk `#1` lọt top-3 chỉ nói về *recall*. Công cụ báo đúng, phần đọc bằng mắt sai. Nếu nhóm chấm theo kiểu "gold `doc_id` có trong top-3 là được" thì đã tính 2 điểm cho một câu mà ngữ cảnh không hề trả lời được. Đây là lý do tôi thấy việc khai báo `must_contain` đáng công hơn tôi tưởng lúc viết nó.
 
 ---
 

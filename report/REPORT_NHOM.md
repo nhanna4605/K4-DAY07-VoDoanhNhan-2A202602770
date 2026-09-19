@@ -266,7 +266,9 @@ Cả ba đều đạt 42/42 trên ba máy và ba phiên bản Python khác nhau,
 
 ## 4. Thuyết trình (Demo) & Bài học nhóm — Nhóm (5 điểm)
 
-**Những phân tích (insights) hay nhất nhóm sẽ trình bày:**
+> **Nhóm không thực hiện được buổi thuyết trình** nên tự chấm 0/5 cho mục Demo (xem bảng tự đánh giá cuối báo cáo). Phần nội dung chuẩn bị cho demo vẫn được viết đầy đủ dưới đây để giảng viên đọc được.
+
+**Bốn phân tích (insights) đáng giá nhất của nhóm:**
 
 1. **Chọn backend quan trọng gấp 7 lần chọn chunker.** Ba chiến lược chunking chênh nhau 1 điểm (10 / 9 / 9). Nhưng cùng một chiến lược `fixed` chạy trên mock so với Gemini chênh **7 điểm** (2/10 → 9/10). Nhóm suýt phân tích nhầm: nếu chạy benchmark bằng mock thì mọi kết luận về chunking đều là so xem chiến lược nào may mắn hơn.
 2. **Hai cách chấm cho kết quả khác nhau, và cách dễ hơn thì sai.** Nếu chỉ kiểm `doc_id` gold có trong top-3, cả ba thành viên đều 10/10 và buổi lab không học được gì. Kiểm thêm chuỗi đặc trưng trong ngữ cảnh mới lộ ra Q3 phân loại được chiến lược. Sai lầm này **thật sự đã xảy ra trong nhóm**: một thành viên khi đọc lại output đã ghi rằng chunk gold ở top-3 "chứa `Overdue items cannot be renewed`", trong khi kiểm lại nội dung chunk thì câu đó nằm ở chunk khác — chunk lọt top-3 chỉ nói về *recall*. Chính `must_contain` bắt được chỗ mà mắt người đọc lướt qua.
@@ -311,5 +313,7 @@ Cả ba đều đạt 42/42 trên ba máy và ba phiên bản Python khác nhau,
 | Lựa chọn tài liệu (Document Set Quality) | 10 / 10 |
 | Thiết kế chiến lược (Strategy Design) | 15 / 15 |
 | Chất lượng truy xuất (Retrieval Quality) | 10 / 10 |
-| Thuyết trình (Demo) | — (chấm tại buổi demo) |
-| **Tổng phần nhóm** | **35 / 35 + demo** |
+| Thuyết trình (Demo) | **0 / 5** |
+| **Tổng phần nhóm** | **35 / 40** |
+
+> **Về điểm Demo:** nhóm **không thực hiện được buổi thuyết trình**, nên tự chấm 0/5 thay vì bỏ trống. Phần nội dung lẽ ra dùng để trình bày (4 insight và ca phân tích lỗi ở mục 4 trên) vẫn được viết đầy đủ trong báo cáo này để giảng viên đọc được, nhưng nhóm không tính điểm cho phần chưa trình bày.
